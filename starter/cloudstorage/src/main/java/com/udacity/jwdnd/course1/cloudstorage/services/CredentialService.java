@@ -11,6 +11,21 @@ import java.util.List;
 public class CredentialService {
 
     private final CredentialMapper credentialMapper;
+    private  HashService hashService;
+    private EncryptionService encryptService;
+
+
+    public Integer saveOne(Credential credential) {
+        String key =  hashService.createEncodedSalt();
+        String hashedPass = encryptService
+                .encryptValue(credential.getPassword(), key);
+        credential.setKey(key);
+        credential.setPassword(hashedPass);
+        return credentialMapper.addCredential(credential);
+    }
+
+
+
 
 
     public CredentialService(CredentialMapper credentialMapper) {
@@ -42,6 +57,10 @@ public class CredentialService {
     }
 
     public Credential getCredentialById(Integer credential){ return credentialMapper.getCredential(credential); }
+
+    public List<Credential> getCredentialListById(Integer credentialId){return credentialMapper.getListCredential(credentialId);
+
+    };
 
     public String getKeyByCredentialId(Integer credential){ return credentialMapper.credentialKey(credential); }
 

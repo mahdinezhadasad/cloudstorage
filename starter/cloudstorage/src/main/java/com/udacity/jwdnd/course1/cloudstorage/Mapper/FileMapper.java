@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.Model.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface FileMapper {
@@ -23,15 +24,23 @@ public interface FileMapper {
     int updateFile(File file);
 
     @Update("UPDATE FILES SET fileId = #{fileId}, filedata = #{fileData} WHERE fileid = #{fileId}")
-
     int updateFileByefileId(File file);
 
 
     @Select("SELECT * FROM FILES WHERE fileId = #{fileId}")
     File getFileById(Integer fileId);
 
+    @Select("SELECT * FROM FILES")
+    Set<File> getFiles();
+
+
+    @Select("select * from files where userid = #{userid}")
+    Set<File> getFilesById(Integer userid);
+
+
+
     @Select("SELECT * FROM FILES WHERE filename = #{fileName} AND userid = #{userId}")
-    File getFileByName(File file);
+    File getFileByName(String fileName);
 
 
 }

@@ -4,6 +4,7 @@ package com.udacity.jwdnd.course1.cloudstorage.Controller;
 import com.udacity.jwdnd.course1.cloudstorage.Model.File;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.http.HttpHeaders;
@@ -11,13 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
@@ -34,7 +35,51 @@ public class FileController {
     }
 
 
-    @PostMapping("/uploading")
+    @GetMapping("/downlod")
+    public @ResponseBody byte[]
+            getFileContent(@Param(value = "filename") String filename, Model model,
+                           RedirectAttributes redirectAttributes, HttpServletResponse response)
+
+    {
+
+        redirectAttributes.addFlashAttribute("activeTab","files");
+
+        File file = fileService.getFileByName(filename);
+
+        if(file != null){
+
+
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            response.setHeader("Content-Disposition",
+                    "attachment; filename=" + file.getFileName()
+            );
+
+            try{
+
+                ServletOutputStream servletOutputStream = response.getOutputStream();
+
+                servletOutputStream.write(file.getFileData());
+
+                servletOutputStream.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return file.getFileData();
+
+
+        }
+
+        return null;
+    }
+
+
+
+
+
+
+    @PostMapping("/upload")
     public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload, Authentication authentication, RedirectAttributes redirectAttributes){
 
         if(fileUpload.isEmpty()){
@@ -50,7 +95,7 @@ public class FileController {
        try{
 
            File file = this.fileService.createFile(fileUpload,userId);
-           if(this.fileService.getFileByName(file)  != null){
+           if(this.fileService.getFileByName(file.getFileName())  != null){
                redirectAttributes.addFlashAttribute("fileError", true);
                redirectAttributes.addFlashAttribute("fileErrorMessage","File with this name already exist");
            }

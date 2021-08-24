@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -63,5 +64,10 @@ public class FileService {
 
     public File getFileById(Integer fileId){ return this.fileMapper.getFileById(fileId); }
 
-    public File getFileByName(File file){ return this.fileMapper.getFileByName(file); }
+    public File getFileByName(String fileName){ return this.fileMapper.getFileByName(fileName); }
+
+    public Set<File> getFilesById(Integer id) {
+        return fileMapper.getFilesById(id);
+    }
+
 }
