@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/signUp")
+@RequestMapping("/signup")
 public class SignUpController {
 
     private UserService userService;
@@ -28,18 +28,10 @@ public class SignUpController {
     }
 
     @PostMapping
-
     public String signUp(@ModelAttribute User user, RedirectAttributes redirectAttributes){
-
-
         String signupErrorMessage = null;
-
         if(!userService.isUserAvailable(user.getUserName())){
-
-
             signupErrorMessage = "The user name already is exist";
-
-
 
         }
         if(signupErrorMessage == null){
@@ -51,18 +43,14 @@ public class SignUpController {
                 signupErrorMessage = "There was an Error when sign up. please try again";
 
             }
-
-
         }
-
-
         if (signupErrorMessage == null) {
             redirectAttributes.addFlashAttribute("signupSuccess",true);
             redirectAttributes.addFlashAttribute("signupSuccessMessage", "New user was successfully created!");
             return "redirect:/login";
         } else {
             redirectAttributes.addFlashAttribute("signupError",true);
-            redirectAttributes.addFlashAttribute("signupErrorMessage", "Error creating a new user!");
+            redirectAttributes.addFlashAttribute("signupErrorMessage", signupErrorMessage);
         }
 
         return "signup";

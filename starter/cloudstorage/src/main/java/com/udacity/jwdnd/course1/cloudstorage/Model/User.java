@@ -2,9 +2,9 @@ package com.udacity.jwdnd.course1.cloudstorage.Model;
 
 public class User {
     private Integer userId;
-    private String password;
+    private String username;
     private String salt;
-    private String userName;
+    private String password;
     private String firstName;
     private String lastName;
 
@@ -12,7 +12,7 @@ public class User {
         this.userId = userId;
         this.password = password;
         this.salt = salt;
-        this.userName = userName;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -42,11 +42,11 @@ public class User {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getFirstName() {
