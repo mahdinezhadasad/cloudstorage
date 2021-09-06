@@ -53,7 +53,7 @@ public class NoteController {
                 || note.getNoteDescription().isEmpty()) {
             model.addAttribute("message", "Note fields can't be void!");
         }
-        Note noteDb = noteService.getNoteById(note);
+        Note noteDb = noteService.getNoteById(note.getNoteId());
         if (note.getNoteId() == null) {
             note.setUserId(user.getUserId());
             Integer id = noteService.addOrEdit(note);

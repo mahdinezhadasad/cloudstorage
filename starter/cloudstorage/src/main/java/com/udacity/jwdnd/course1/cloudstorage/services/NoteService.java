@@ -59,10 +59,10 @@ public class NoteService {
         return noteMapper.getAllNotes(userId);
 
     }
-    public Note getNoteById(Note note){
+    public Note getNoteById(Integer id){
 
 
-        return noteMapper.noteById(note);
+        return noteMapper.noteById(id);
     }
 
 

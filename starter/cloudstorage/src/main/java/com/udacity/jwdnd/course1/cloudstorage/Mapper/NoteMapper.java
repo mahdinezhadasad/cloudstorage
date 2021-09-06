@@ -15,7 +15,7 @@ public interface NoteMapper {
     int addNote(Note note);
 
 
-    @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
+    @Select("SELECT * FROM NOTES WHERE userId = #{userId}")
     List<Note> getAllNotes(Integer userId);
 
 
@@ -27,14 +27,14 @@ public interface NoteMapper {
     int updateNote(Note note);
 
 
-    @Update("UPDATE NOTES SET notetitle = {#noteTitle},notedescription = {#noteDescription}" + "WHERE noteid = {# noteId}")
+    @Update("UPDATE NOTES SET notetitle = {#noteTitle},notedescription = {#noteDescription}" + "WHERE noteid = {# noteid}")
     int updateNoteById(Note note);
 
 
-    @Select("SELECT * FROM NOTES WHERE noteid = {# noteId}")
-    Note noteById(Note note);
+    @Select("SELECT * FROM NOTES WHERE noteid = {# noteid}")
+    Note noteById(Integer id);
 
-    @Select("SELECT key FROM NOTES WHERE noteid = #{noteId}")
+    @Select("SELECT key FROM NOTES WHERE noteid = #{noteid}")
 
     String noteKeyById(Note note);
 

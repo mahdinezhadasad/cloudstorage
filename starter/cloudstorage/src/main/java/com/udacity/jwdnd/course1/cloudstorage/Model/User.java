@@ -12,7 +12,7 @@ public class User {
         this.userId = userId;
         this.password = password;
         this.salt = salt;
-        this.username = username;
+        this.username = userName;
         this.firstName = firstName;
         this.lastName = lastName;
     }
