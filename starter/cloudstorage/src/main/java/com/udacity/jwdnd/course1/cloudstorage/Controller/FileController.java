@@ -73,13 +73,7 @@ public class FileController {
 
         return null;
     }
-
-
-
-
-
-
-    @PostMapping("/upload")
+    @PostMapping("/upload-file")
     public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload, Authentication authentication, RedirectAttributes redirectAttributes){
 
         if(fileUpload.isEmpty()){
@@ -95,7 +89,7 @@ public class FileController {
        try{
 
            File file = this.fileService.createFile(fileUpload,userId);
-           if(this.fileService.getFileByName(file.getFileName())  != null){
+           if(this.fileService.getFileByName(file.getFileName())  == null){
                redirectAttributes.addFlashAttribute("fileError", true);
                redirectAttributes.addFlashAttribute("fileErrorMessage","File with this name already exist");
            }

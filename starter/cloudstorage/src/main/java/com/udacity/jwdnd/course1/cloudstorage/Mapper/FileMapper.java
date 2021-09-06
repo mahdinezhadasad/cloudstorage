@@ -34,7 +34,7 @@ public interface FileMapper {
     Set<File> getFiles();
 
 
-    @Select("select * from files where userid = #{userid}")
+    @Select("SELECT * FROM FILES WHERE userid = #{userid}")
     Set<File> getFilesById(Integer userid);
 
 
