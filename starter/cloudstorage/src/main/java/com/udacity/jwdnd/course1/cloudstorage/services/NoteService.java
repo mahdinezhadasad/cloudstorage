@@ -12,45 +12,33 @@ import java.util.List;
 public class NoteService {
 
     private final NoteMapper noteMapper;
-    private final Note note;
+    //private final Note note;
 
 
-    public NoteService(NoteMapper noteMapper, Note note) {
+    public NoteService(NoteMapper noteMapper) {
         this.noteMapper = noteMapper;
-        this.note = note;
+        //this.note = note;
     }
-
-
     @PostConstruct
     public void postConstruct(){
-
-
         System.out.println("This post construct for NoteService");
     }
 
     public Integer addOrEdit(Note note){
 
         if(note.getNoteId() == null){
-
-
             return noteMapper.addNote(note);
-
         }
 
         else{
 
             return noteMapper.updateNoteById(note);
-
         }
     }
 
     public Integer delete(Integer noteId){
-
-
-        return noteMapper.deleteNote(note.getUserId());
-
+        return noteMapper.deleteNote(noteId);
     }
-
     public Integer update(Note note){
 
         return noteMapper.updateNote(note);
