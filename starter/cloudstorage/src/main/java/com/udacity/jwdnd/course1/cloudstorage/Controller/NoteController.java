@@ -50,7 +50,6 @@ public class NoteController {
             return "redirect:/logout";
 
         }
-
         if (note.getNoteTitle() == null
                 || note.getNoteTitle().isEmpty()
                 || note.getNoteDescription() == null
@@ -68,7 +67,7 @@ public class NoteController {
             redirectAttributes.addFlashAttribute("success", true);
             return "redirect:/home";
         }
-        return "redirect:/result";
+        return "redirect:/home";
     }
 
     @GetMapping("/delete/{noteId}")
