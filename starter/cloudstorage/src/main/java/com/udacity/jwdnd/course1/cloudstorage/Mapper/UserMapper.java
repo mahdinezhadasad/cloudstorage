@@ -1,9 +1,13 @@
 package com.udacity.jwdnd.course1.cloudstorage.Mapper;
+import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.Model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
     @Select("SELECT * FROM USERS WHERE username = #{username}")
@@ -14,4 +18,8 @@ public interface UserMapper {
     int insert(User user);
     @Select("SELECT * FROM USERS WHERE userId = #{userid}")
     User getUserById(Integer userId);
+
+    @Select("SELECT userId FROM USERS WHERE username = #{username}")
+    Integer getUserIdByName(String username);
+
 }

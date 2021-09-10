@@ -26,8 +26,8 @@ public class Note {
         return noteid;
     }
 
-    public void setNoteId(Integer noteId) {
-        this.noteid = noteId;
+    public void setNoteId(Integer noteid) {
+        this.noteid = noteid;
     }
 
     public String getNoteDescription() {

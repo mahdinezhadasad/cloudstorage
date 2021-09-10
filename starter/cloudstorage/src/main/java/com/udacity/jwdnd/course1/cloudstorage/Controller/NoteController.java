@@ -10,7 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,14 +33,16 @@ public class NoteController {
     public String saveNote(@ModelAttribute Note note,
                            Model model,
                            RedirectAttributes redirectAttributes,
-                           HttpServletRequest req,
-                           HttpServletResponse res){
+                           Authentication authentication){
 
         redirectAttributes.addFlashAttribute("activeTab","notes");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) auth.getPrincipal();
         User user = userService.getUser(username);
+
+        String userName = authentication.getName();
+        Integer userId = userService.getUserId(username);
 
         if(user == null){
 
@@ -54,18 +58,30 @@ public class NoteController {
             model.addAttribute("message", "Note fields can't be void!");
         }
         Note noteDb = noteService.getNoteById(note.getNoteId());
-        if (note.getNoteId() == null) {
-            note.setUserId(user.getUserId());
+        if (noteDb == null) {
+            note.setUserId(userId);
             Integer id = noteService.addOrEdit(note);
             redirectAttributes.addFlashAttribute("success", true);
         } else {
             note.setNoteId(user.getUserId());
             Integer id = noteService.update(note);
             redirectAttributes.addFlashAttribute("success", true);
-            return "redirect:/result";
+            return "redirect:/home";
         }
         return "redirect:/result";
     }
 
+    @GetMapping("/delete/{noteId}")
+    public String deleteNote(@PathVariable Integer noteId, Model model) {
+        int rowsUpdated = noteService.delete(noteId);
+        if (rowsUpdated == 1) {
+            model.addAttribute("isSuccess", true);
+            return "result";
+        } else {
+            model.addAttribute("isError", true);
+            return "result";
+        }
+
+}
 }
 

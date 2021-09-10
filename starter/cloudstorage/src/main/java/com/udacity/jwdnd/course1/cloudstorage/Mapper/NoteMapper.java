@@ -15,23 +15,23 @@ public interface NoteMapper {
     int addNote(Note note);
 
 
-    @Select("SELECT * FROM NOTES WHERE userId = #{userId}")
+    @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
     List<Note> getAllNotes(Integer userId);
 
 
     @Delete("DELETE * FROM NOTES WHERE userid = {userId}")
 
-    int deleteNote(Note note);
+    int deleteNote(Integer id);
 
     @Update("UPDATE NOTES SET notetitle={#noteTitle},notedescription = {#noteDescription}")
     int updateNote(Note note);
 
 
-    @Update("UPDATE NOTES SET notetitle = {#noteTitle},notedescription = {#noteDescription}" + "WHERE noteid = {# noteid}")
+    @Update("UPDATE NOTES SET notetitle = {#noteTitle},notedescription = {#noteDescription}" + "WHERE noteid = {# noteId}")
     int updateNoteById(Note note);
 
 
-    @Select("SELECT * FROM NOTES WHERE noteid = {# noteid}")
+    @Select("SELECT * FROM NOTES WHERE noteid = {#noteid}")
     Note noteById(Integer id);
 
     @Select("SELECT key FROM NOTES WHERE noteid = #{noteid}")
@@ -40,4 +40,6 @@ public interface NoteMapper {
 
     @Select("SELECT * FROM NOTES WHERE notetitle = #{noteTitle}")
     Note getNoteByTitle(String noteTitle);
+
+
 }

@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 
 import com.udacity.jwdnd.course1.cloudstorage.Mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -11,14 +12,16 @@ import java.util.List;
 public class NoteService {
 
     private final NoteMapper noteMapper;
+    private final Note note;
 
-    public NoteService(NoteMapper noteMapper) {
+
+    public NoteService(NoteMapper noteMapper, Note note) {
         this.noteMapper = noteMapper;
+        this.note = note;
     }
 
 
     @PostConstruct
-
     public void postConstruct(){
 
 
@@ -41,10 +44,10 @@ public class NoteService {
         }
     }
 
-    public Integer delete(Note note){
+    public Integer delete(Integer noteId){
 
 
-        return noteMapper.deleteNote(note);
+        return noteMapper.deleteNote(note.getUserId());
 
     }
 
