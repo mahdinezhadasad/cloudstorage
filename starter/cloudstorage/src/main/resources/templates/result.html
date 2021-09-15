@@ -15,11 +15,11 @@
                     th:text="${activeTab}"
                 </span>
                 <h1 class="display-5">Success</h1>
-                <span>Your changes were successfully saved. Click <a>here</a> to continue.</span>
+                <span>Your changes were successfully saved. Click <a th:href="@{'/home?activeTab=' + ${activeTab}}">here</a>to continue.</span>
             </div>
             <div th:unless="${success}" class="alert alert-danger fill-parent">
                 <h1 class="display-5">Error</h1>
-                <span>Your changes were not saved. Click <a>th:href="@{'/home?activeTab=' + ${activeTab}}">here</a> to continue.</span>
+                <span>Your changes were not saved. Click <a th:href="@{'/home?activeTab=' + ${activeTab}}">here</a> to continue.</span>
             </div>
             <div th:unless="${success}" class="alert alert-danger fill-parent">
                 <h1 class="display-5">Error</h1>

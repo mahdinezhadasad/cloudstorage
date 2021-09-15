@@ -77,8 +77,8 @@
                                 <button type="button" class="btn btn-success">Edit</button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
-                            <th scope="row"> th:text = "${note.getNoteTitle()}"</th>
-                            <td>th:text="${note.getNoteDescription()}" </td>
+                            <th scope="row" th:text = "${note.getNoteTitle()}"></th>
+                            <td th:text="${note.getNoteDescription()}"> </td>
                         </tr>
                         </tbody>
                     </table>
@@ -128,15 +128,21 @@
                             <th style="width: 25%" scope="col">Password</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                        <tbody id="credential-table-body">
+                        <tr th:each="credential :${credentials}">
+                            <td style="display: flex;">
+                                <button type="button" class="btn btn-success"th:onclick="showCredentialModal([[${credentials.credentialId}]], [[${credentials.url}]], [[${credentials.username}]], [[${encryptionService.decryptValue(credentials.password,credentials.key)}]])">EditEdit</button>
+                                <form class ="delete-form" th:action="@{credentials/delete}" th:object = "${credentials}" method="post">
+                                    <input type="hidden" name="credentialId" th:value="${credentials.credentialId}" />
+                                    <input id="deleteCredentialButton" type="submit" value="Delete" class="btn btn-danger" />
+
+
+                                </form>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
-                            <th scope="row">Example Credential URL</th>
-                            <td>Example Credential Username</td>
-                            <td>Example Credential Password</td>
+                            <th id="table-credential-url" scope="row" th:text="${credential.url}" />
+                            <td id="table-credential-username" th:text="${credential.username}" />
+                            <td id="table-credential-password" th:text="${credential.password}" />
                         </tr>
                         </tbody>
                     </table>
@@ -151,7 +157,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" th:action="@{|/credential|}" method="POST">
+                                <form action="#" th:action="@{|/credentials|}" method="POST">
                                     <input type="hidden" name="credentialId" id="credential-id">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">URL</label>
@@ -184,6 +190,15 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <!--For opening the note modal-->
 <script type="text/javascript">
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        console.log("tab shown...");
+        localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = localStorage.getItem('activeTab');
+
+    if (activeTab) {
+        $('.nav-tabs a[href="' + activeTab + '"]').tab('show');
+    }
     // For opening the note modal
     function showNoteModal(noteId, noteTitle, noteDescription) {
         $('#note-id').val(noteId ? noteId : '');

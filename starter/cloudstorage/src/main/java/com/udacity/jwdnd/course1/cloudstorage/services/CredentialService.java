@@ -14,7 +14,6 @@ public class CredentialService {
     private  HashService hashService;
     private EncryptionService encryptService;
 
-
     public Integer saveOne(Credential credential) {
         String key =  hashService.createEncodedSalt();
         String hashedPass = encryptService
@@ -23,11 +22,6 @@ public class CredentialService {
         credential.setPassword(hashedPass);
         return credentialMapper.addCredential(credential);
     }
-
-
-
-
-
     public CredentialService(CredentialMapper credentialMapper) {
         this.credentialMapper = credentialMapper;
     }
