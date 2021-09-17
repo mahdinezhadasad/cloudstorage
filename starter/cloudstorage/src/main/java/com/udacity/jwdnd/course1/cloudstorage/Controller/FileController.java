@@ -65,7 +65,7 @@ public class FileController {
 
 
 
-    @GetMapping("/download")
+  /*  @GetMapping("/download")
     public @ResponseBody
     byte[] getFileContent(@Param(value = "filename") String filename,
                           Model model,
@@ -88,23 +88,24 @@ public class FileController {
             return file.getFileData();
         }
         return null;
-    }
-
-   /* @PostMapping("/download")
-    public ResponseEntity downloadFile(@RequestParam("fileDownloadId") Integer id, Authentication authentication) {
-
-        Integer userId = userService.getUserId(authentication.getName());
-
-        File file = fileService.getFileById(id);
-        if (file == null) {
-
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(file.getContentType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename=\"" + file.getFileName() + "\"")
-                .body(file.getFileData());
     }*/
+  @PostMapping("/download")
+  public ResponseEntity downloadFile(@RequestParam("fileDownloadId") Integer id, Authentication authentication) {
+      Integer userId = userService.getUserId(authentication.getName());
+      File file = fileService.getFileById(id);
+      if (file == null) {
+          //TODO: "File not found!"
+          return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok()
+              .contentType(MediaType.parseMediaType(file.getContentType()))
+              .header(HttpHeaders.CONTENT_DISPOSITION,
+                      "inline; filename=\"" + file.getFileName() + "\"")
+              .body(file.getFileData());
+  }
+    @GetMapping({"/download","/download/{id:.+}"})
+    public String downloadFileGet() {
+        return "redirect:/home?view";
+    }
 
 }
