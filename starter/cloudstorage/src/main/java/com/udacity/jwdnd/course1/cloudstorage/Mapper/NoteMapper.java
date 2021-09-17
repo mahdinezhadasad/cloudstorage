@@ -19,15 +19,20 @@ public interface NoteMapper {
     List<Note> getAllNotes(Integer userId);
 
 
-    @Delete("DELETE * FROM NOTES WHERE userid = #{userId}")
+    //@Delete("DELETE * FROM NOTES WHERE noteid = #{noteId}")
+    //int deleteNote(Integer id);
 
-    int deleteNote(Integer id);
+   // @Update("UPDATE NOTES SET notetitle={#noteTitle},notedescription = {#noteDescription}")
+   // int updateNote(Note note);
 
-    @Update("UPDATE NOTES SET notetitle={#noteTitle},notedescription = {#noteDescription}")
-    int updateNote(Note note);
+    @Delete("delete from Notes where noteid = #{noteid}")
+    @Options(useGeneratedKeys = true, keyProperty = "userId")
+    Integer deleteById(Integer id);
 
 
-    @Update("UPDATE NOTES SET notetitle = {#noteTitle},notedescription = {#noteDescription}" + "WHERE noteid = {# noteId}")
+
+    @Update("UPDATE NOTES SET notetitle = #{noteTitle}, notedescription = #{noteDescription} " +
+            "WHERE noteid = #{noteId}")
     int updateNoteById(Note note);
 
 

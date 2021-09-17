@@ -37,11 +37,11 @@ public class NoteService {
     }
 
     public Integer delete(Integer noteId){
-        return noteMapper.deleteNote(noteId);
+        return noteMapper.deleteById(noteId);
     }
     public Integer update(Note note){
 
-        return noteMapper.updateNote(note);
+        return noteMapper.updateNoteById(note);
 
     }
 

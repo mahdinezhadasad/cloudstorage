@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.Files;
+
 @Controller
 public class FileController {
     private final UserService userService;
@@ -25,30 +27,7 @@ public class FileController {
         this.userService = userService;
         this.fileService = fileService;
     }
-    @GetMapping("/downlod")
-    public @ResponseBody byte[]
-    getFileContent(@Param(value = "filename") String filename, Model model,
-                   RedirectAttributes redirectAttributes, HttpServletResponse response, Authentication authentication)
-    {
-        redirectAttributes.addFlashAttribute("activeTab","files");
-        Integer userId = this.userService.getUser(authentication.getName()).getUserId();
-        File file = fileService.getFileByName(filename, userId);
-        if(file != null){
-            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            response.setHeader("Content-Disposition",
-                    "attachment; filename=" + file.getFileName()
-            );
-            try{
-                ServletOutputStream servletOutputStream = response.getOutputStream();
-                servletOutputStream.write(file.getFileData());
-                servletOutputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return file.getFileData();
-        }
-        return null;
-    }
+
     @PostMapping("/upload-file")
     public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload, Authentication authentication, RedirectAttributes redirectAttributes){
         if(fileUpload.isEmpty()){
@@ -76,18 +55,56 @@ public class FileController {
         redirectAttributes.addFlashAttribute("activeTab", "files");
         return "redirect:/home";
     }
-    @GetMapping("/files/delete/{fileId}")
+    @GetMapping("/delete-file/{fileId}")
     public String deleteFile(@PathVariable("fileId") int fileId, RedirectAttributes redirectAttributes){
         this.fileService.deleteFile(fileId);
         redirectAttributes.addFlashAttribute("activeTab", "files");
         return "redirect:/home";
     }
-    @GetMapping("/files/view/{fileId}")
-    public ResponseEntity<InputStreamSource> getFile(@PathVariable Integer fileId)  {
-        File file = this.fileService.getFileById(fileId);
-        ByteArrayResource resource = new ByteArrayResource(file.getFileData());
-        MediaType mt = MediaType.parseMediaType(file.getContentType());
-        return ResponseEntity.ok().contentType(mt).header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFileName() + "\"").body(resource);
+
+
+
+
+    @GetMapping("/download")
+    public @ResponseBody
+    byte[] getFileContent(@Param(value = "filename") String filename,
+                          Model model,
+                          RedirectAttributes redirectAttributes,
+                          HttpServletResponse res) {
+        redirectAttributes.addFlashAttribute("activeTab", "files");
+        File file = fileService.getFileByName(filename);
+        if (file != null) {
+            res.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            res.setHeader("Content-Disposition",
+                    "attachment; filename=" + file.getName());
+            try {
+                ServletOutputStream outputStream = res.getOutputStream();
+                outputStream.write(file.getFileData());
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+            return file.getFileData();
+        }
+        return null;
     }
+
+   /* @PostMapping("/download")
+    public ResponseEntity downloadFile(@RequestParam("fileDownloadId") Integer id, Authentication authentication) {
+
+        Integer userId = userService.getUserId(authentication.getName());
+
+        File file = fileService.getFileById(id);
+        if (file == null) {
+
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(file.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"" + file.getFileName() + "\"")
+                .body(file.getFileData());
+    }*/
+
 }

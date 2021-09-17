@@ -70,11 +70,11 @@ public class NoteController {
         return "redirect:/home";
     }
 
-    @GetMapping("/delete/{noteId}")
+    @GetMapping("/delete-note/{noteId}")
     public String deleteNote(@PathVariable Integer noteId, Model model) {
         int rowsUpdated = noteService.delete(noteId);
         if (rowsUpdated == 1) {
-            model.addAttribute("isSuccess", true);
+            model.addAttribute("success", true);
             return "result";
         } else {
             model.addAttribute("isError", true);

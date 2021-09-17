@@ -46,8 +46,13 @@ public class FileService {
         return fileMapper.getAllFiles(userId);
     }
     public File getFileById(Integer fileId){ return this.fileMapper.getFileById(fileId); }
-    public File getFileByName(String fileName, int userId){ return this.fileMapper.getFileByName(fileName, userId); }
+    public File getFileByName(String fileName, int userId){ return this.fileMapper.getFileByNameAndUserId(fileName, userId); }
     public Set<File> getFilesById(Integer id) {
         return fileMapper.getFilesById(id);
+    }
+
+    public File getFileByName(String filename) {
+
+        return fileMapper.getFileByName(filename);
     }
 }

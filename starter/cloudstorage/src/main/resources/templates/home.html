@@ -47,10 +47,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="file : ${files}">
+                        <tr id = "files" th:each="file : ${files}">
                             <td>
-                                <a target="_blank" class="btn btn-success">View</a>
-                                <a  class="btn btn-danger">Delete</a>
+                                <a th:href="@{|/download?filename=${file.fileName}|}" target="_blank"
+                                   class="btn btn-success">View</a>
+
+
+                                <a  th:href="@{'/delete-file/' + ${file.fileId}}"class="btn btn-danger">Delete</a>
                             </td>
                             <th scope="row" th:text="${file.fileName}">ExampleFile.txt</th>
                         </tr>
@@ -74,8 +77,10 @@
                         <tbody th:each="note:${notes}">
                         <tr>
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+                                <button type="button" class="btn btn-success" th:onclick="javascript:showNoteModal( [[${note.getNoteId()}]],[[${note.getNoteTitle()}]],[[${note.getNoteDescription()}]] )">Edit</button>
+                                <a th:href="@{|/delete-note/${note.noteId}|}"
+                                   id="btn-delete-note" class="btn btn-danger">Delete</a>
+
                             </td>
                             <th scope="row" th:text = "${note.getNoteTitle()}"></th>
                             <td th:text="${note.getNoteDescription()}"> </td>
@@ -129,21 +134,22 @@
                         </tr>
                         </thead>
                         <tbody id="credential-table-body">
-                        <tr th:each="credential :${credentials}">
-                            <td style="display: flex;">
-                                <button type="button" class="btn btn-success"th:onclick="showCredentialModal([[${credentials.credentialId}]], [[${credentials.url}]], [[${credentials.username}]], [[${encryptionService.decryptValue(credentials.password,credentials.key)}]])">EditEdit</button>
-                                <form class ="delete-form" th:action="@{credentials/delete}" th:object = "${credentials}" method="post">
-                                    <input type="hidden" name="credentialId" th:value="${credentials.credentialId}" />
-                                    <input id="deleteCredentialButton" type="submit" value="Delete" class="btn btn-danger" />
-
-
-                                </form>
-                                <a class="btn btn-danger">Delete</a>
+                        <tr id="credentials" th:each="credential : ${credentials}">
+                            <td>
+                                <a class="btn btn-success" id="btn-edit-credential"
+                                   th:onclick="showCredentialModal([[${credential.id}]],
+                                    [[${credential.url}]], [[${credential.username}]],
+                                     [[${encryptionService.decryptValue(credential.password,
+                                      credential.key)}]])">Edit</a>
+                                <a th:href="@{|/delete-credential/${credential.id}|}"
+                                   id="btn-delete-credential"
+                                   class="btn btn-danger">Delete</a>
                             </td>
-                            <th id="table-credential-url" scope="row" th:text="${credential.url}" />
-                            <td id="table-credential-username" th:text="${credential.username}" />
-                            <td id="table-credential-password" th:text="${credential.password}" />
+                            <th scope="row" th:text="${credential.url}"></th>
+                            <td th:text="${credential.username}"></td>
+                            <td th:text="${credential.password}"></td>
                         </tr>
+
                         </tbody>
                     </table>
                 </div>
