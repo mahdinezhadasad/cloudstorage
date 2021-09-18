@@ -43,21 +43,15 @@ public class CredentialController {
         return "redirect:/result";
     }
 
-    @PostMapping("/credentials/delete")
-    public String deleteCredential(RedirectAttributes redirectAttributes, @ModelAttribute Credential credential) {
+    @GetMapping("/credentials-delete/{credentialId}")
+    public String deleteCredential(@PathVariable Integer credentialId,
+
+                                   RedirectAttributes redirectAttributes, @ModelAttribute Credential credential) {
         redirectAttributes.addFlashAttribute("activeTab", "credentials");
-        Integer credentialId = credential.getCredentialId();
-
-
-        try {
-            credentialService.deleteCredential(credentialId);
-            redirectAttributes.addFlashAttribute("success", true);
-            redirectAttributes.addFlashAttribute("message", "Credentials deleted!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", true);
-            redirectAttributes.addFlashAttribute("message", "System error!" + e.getMessage());
-        }
+        Integer idDel = credentialService.deleteCredential(credentialId);
+        redirectAttributes.addFlashAttribute("success", true);
         return "redirect:/result";
+
     }
 }
 

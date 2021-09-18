@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 
 import com.udacity.jwdnd.course1.cloudstorage.Mapper.CredentialMapper;
 import com.udacity.jwdnd.course1.cloudstorage.Model.Credential;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -10,18 +11,21 @@ import java.util.List;
 @Service
 public class CredentialService {
 
+    @Autowired
     private final CredentialMapper credentialMapper;
+    @Autowired
     private  HashService hashService;
+    @Autowired
     private EncryptionService encryptService;
 
-    public Integer saveOne(Credential credential) {
+   /* public Integer saveOne(Credential credential) {
         String key =  hashService.createEncodedSalt();
         String hashedPass = encryptService
                 .encryptValue(credential.getPassword(), key);
         credential.setKey(key);
         credential.setPassword(hashedPass);
         return credentialMapper.addCredential(credential);
-    }
+    }*/
     public CredentialService(CredentialMapper credentialMapper) {
         this.credentialMapper = credentialMapper;
     }
@@ -35,7 +39,11 @@ public class CredentialService {
 
     public Integer addOrEditCredential(Credential credential) {
         if (credential.getCredentialId() == null){
-            return this.credentialMapper.addCredential(credential);
+            String key = hashService.createEncodedSalt();
+            String hashedPass = encryptService.encryptValue(credential.getPassword(),key);
+            credential.setKey(key);
+            credential.setPassword(hashedPass);
+            return credentialMapper.addCredential(credential);
         }
         else{
             return this.credentialMapper.updateCredential(credential);

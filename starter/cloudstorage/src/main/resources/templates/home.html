@@ -139,21 +139,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:field="${credential.credentialId}" th:each="credential : ${credentials}">
+                        <tr id="credentials" th:each="credential : ${credentials}">
                             <td>
-                                <button type="button" class="btn btn-success"
-                                        th:attr="decrypted-password=${encryptionService.decryptValue(credential.password, credential.key)}"
-                                        th:onclick="javascript: showCredentialModal([[${credential.credentialId}]],
-                                         [[${credential.url}]], [[${credential.username}]], this.getAttribute('decrypted-password'))"
-                                        id="edit-credential">Edit
-                                </button>
-
+                                <a class="btn btn-success" id="btn-edit-credential"
+                                   th:onclick="showCredentialModal([[${credential.credentialId}]],
+                                    [[${credential.url}]], [[${credential.username}]],
+                                     [[${encryptionService.decryptValue(credential.password,
+                                      credential.key)}]])">Edit</a>
+                                <a th:href="@{|/credentials-delete/${credential.credentialId}|}"
+                                   id="btn-delete-credential"
+                                   class="btn btn-danger">Delete</a>
                             </td>
-                            <th scope="row" id="url" th:text="${credential.url}">Example Credential URL</th>
-                            <td id="username" th:text="${credential.username}">Example Credential Username</td>
-                            <td id="password" th:text="${credential.password}">Example Credential Password</td>
+                            <th scope="row" th:text="${credential.url}"></th>
+                            <td th:text="${credential.username}"></td>
+                            <td th:text="${credential.password}"></td>
                         </tr>
                         </tbody>
+
+
                     </table>
                 </div>
                 <div class="modal fade" id="credentialModal" tabindex="-1" role="dialog" aria-labelledby="credentialModalLabel" aria-hidden="true">
