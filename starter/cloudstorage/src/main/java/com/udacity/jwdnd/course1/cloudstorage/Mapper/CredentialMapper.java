@@ -22,8 +22,8 @@ public interface CredentialMapper {
     int updateCredential(Credential credential);
     @Update("UPDATE CREDENTIALS SET url = #{url}, username = #{userName}, password = #{password} WHERE credentialId = #{credentialId}")
     int updateCredentialByCredentialId(Credential credential);
-    @Select("SELECT * FROM CREDENTIALS WHERE credentialId = #{credentialId}")
-    List<Credential>  getListCredential(Integer credentialId);
+    @Select("SELECT * FROM CREDENTIALS WHERE userid = #{userId}")
+    List<Credential> getListCredential(Integer userId);
     @Select("SELECT * FROM CREDENTIALS WHERE credentialId = #{credentialId}")
     Credential  getCredential(Integer credentialId);
     @Select("SELECT key FROM CREDENTIALS WHERE credentialid = #{credentialId}")
@@ -32,6 +32,9 @@ public interface CredentialMapper {
     int Credntial(Integer credentialId, String username);
     @Select("SELECT * FROM CREDENTIALS WHERE url = #{url} AND username = #{userName}")
     int CredntialUrlAndUserName(String url, String username);
+
+    @Select("SELECT * FROM CREDENTIALS WHERE url = #{url}")
+    Credential getCredentialByUrl(String url);
 
 
 }

@@ -46,6 +46,11 @@ public class CredentialService {
             return credentialMapper.addCredential(credential);
         }
         else{
+            Credential credential1 = this.getCredentialById(credential.getCredentialId());
+            String key = credential1.getKey();
+            String hashedPass = encryptService.encryptValue(credential.getPassword(),key);
+            credential.setKey(key);
+            credential.setPassword(hashedPass);
             return this.credentialMapper.updateCredential(credential);
         }
     }
@@ -69,6 +74,14 @@ public class CredentialService {
     public int getCredentialByURLandUsername(String url, String username){
         return credentialMapper.CredntialUrlAndUserName(url, username);
     }
+
+    public Credential getCredentialByUrl(String Url){
+
+
+        return credentialMapper.getCredentialByUrl(Url);
+    }
+
+
 
 
 
