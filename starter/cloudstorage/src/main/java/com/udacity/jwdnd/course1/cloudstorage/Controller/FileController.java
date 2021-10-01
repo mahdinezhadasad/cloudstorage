@@ -65,7 +65,7 @@ public class FileController {
 
 
 
-  /*  @GetMapping("/download")
+    @GetMapping("/download")
     public @ResponseBody
     byte[] getFileContent(@Param(value = "filename") String filename,
                           Model model,
@@ -88,8 +88,8 @@ public class FileController {
             return file.getFileData();
         }
         return null;
-    }*/
-  @PostMapping("/download")
+    }
+ /* @PostMapping("/download")
   public ResponseEntity downloadFile(@RequestParam("fileDownloadId") Integer id, Authentication authentication) {
       Integer userId = userService.getUserId(authentication.getName());
       File file = fileService.getFileById(id);
@@ -107,5 +107,5 @@ public class FileController {
     public String downloadFileGet() {
         return "redirect:/home?view";
     }
-
+*/
 }

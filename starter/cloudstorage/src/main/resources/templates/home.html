@@ -49,14 +49,8 @@
                         <tbody>
                         <tr id = "files" th:each="file : ${files}">
                             <td>
-                                <form action="#" th:action="@{/file/download}" th:method="POST" th:target="_blank">
-                                    <div class="alert alert-danger fill-parent" th:if="${param.view}">
-                                        <span>Please Click on the View Button to download the file</span>
-                                    </div>
-                                    <input type="hidden" name="fileDownloadId" th:value="${file.fileId}">
-                                    <button  type="submit" class="btn btn-success">View</button>
-                                </form>
-
+                                <a th:href="@{|/download?filename=${file.fileName}|}" target="_blank"
+                                   class="btn btn-success">View</a>
 
                                 <a  th:href="@{'/delete-file/' + ${file.fileId}}"class="btn btn-danger">Delete</a>
                             </td>

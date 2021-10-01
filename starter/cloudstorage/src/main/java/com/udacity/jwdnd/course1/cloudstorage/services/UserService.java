@@ -13,7 +13,7 @@ public class UserService {
         this.hashServices = hashService;
     }
     public boolean isUserAvailable(String username){
-        return userMapper.getUser(username) == null;
+        return userMapper.getUser(username)== null;
     }
     public int create(User user){
         SecureRandom  random = new SecureRandom();

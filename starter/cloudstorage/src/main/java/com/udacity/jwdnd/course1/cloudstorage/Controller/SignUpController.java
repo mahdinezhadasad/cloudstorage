@@ -4,6 +4,7 @@ package com.udacity.jwdnd.course1.cloudstorage.Controller;
 import com.udacity.jwdnd.course1.cloudstorage.Model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class SignUpController {
     }
 
     @PostMapping
-    public String signUp(@ModelAttribute User user, RedirectAttributes redirectAttributes){
+    public String signUp(@ModelAttribute User user, RedirectAttributes redirectAttributes, Model model){
         String signupErrorMessage = null;
         if(!userService.isUserAvailable(user.getUserName())){
             signupErrorMessage = "The user name already is exist";
@@ -44,16 +45,22 @@ public class SignUpController {
 
             }
         }
-        if (signupErrorMessage == null) {
-            redirectAttributes.addFlashAttribute("signupSuccess",true);
-            redirectAttributes.addFlashAttribute("signupSuccessMessage", "New user was successfully created!");
-            return "redirect:/login";
-        } else {
-            redirectAttributes.addFlashAttribute("signupError",true);
-            redirectAttributes.addFlashAttribute("signupErrorMessage", signupErrorMessage);
+
+        if(signupErrorMessage==null){
+
+            model.addAttribute("signupSuccess",true);
+            redirectAttributes.addFlashAttribute("success",true);
+
+            return "signup";
+
+
+        }
+        if (signupErrorMessage != null) {
+            model.addAttribute("error",signupErrorMessage);
+            return "signup";
         }
 
-        return "signup";
+        return "redirect:/login?signup=true";
 
 
 
